@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Freelance Photographer Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- AOS Animate On Scroll CSS -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <h1>Jane Doe Photography</h1>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" data-aos="fade-up">
+    <div class="container">
+      <h1>Capturing Life’s Beautiful Moments</h1>
+      <p>Professional freelance photography — portraits, events, nature & more.</p>
+      <a href="#portfolio" class="btn">View My Work</a>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="section" data-aos="fade-right">
+    <div class="container">
+      <h2>About Me</h2>
+      <p>Hi, I'm Jane Doe — a passionate freelance photographer based in New York. I specialize in capturing authentic moments through portrait, event, and lifestyle photography. My goal is to create timeless images that evoke emotion and tell real stories.</p>
+      <p>Whether it's a quiet smile, a joyful celebration, or a candid moment in nature, I aim to bring out the beauty in every scene. I’ve worked with clients ranging from individuals and couples to brands and event organizers — always with a focus on creativity, professionalism, and a personal touch.</p>
+      <p>When I’m not behind the lens, you’ll find me exploring new locations, editing in my home studio, or planning the next shoot. Let’s create something beautiful together.</p>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="section" data-aos="fade-up">
+    <div class="container">
+      <h2>Services</h2>
+      <div class="service-grid">
+        <div class="service" data-aos="fade-up" data-aos-delay="100">
+          <h3>Portrait Sessions</h3>
+          <p>Professional, natural portraits for individuals, couples, and families — in studio or on location.</p>
+        </div>
+        <div class="service" data-aos="fade-up" data-aos-delay="200">
+          <h3>Event Photography</h3>
+          <p>Weddings, birthdays, concerts, and corporate events — capturing memories as they happen.</p>
+        </div>
+        <div class="service" data-aos="fade-up" data-aos-delay="300">
+          <h3>Brand & Product Photography</h3>
+          <p>Creative visuals for businesses, products, and social media campaigns that stand out.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfolio Section -->
+  <section id="portfolio" class="section" data-aos="zoom-in">
+    <div class="container">
+      <h2>Portfolio</h2>
+      <div class="grid">
+        <img src="photos/woman-portrait.jpg" alt="Portrait Sample">
+        <img src="photos/landscape1.jpg" alt="Landscape Sample">
+        <img src="photos/nature.jpg" alt="Nature Sample">
+        <img src="photos/city.jpg" alt="City Sample">
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section id="testimonials" class="section testimonials-section" data-aos="fade-left">
+    <div class="container">
+      <h2>Client Testimonials</h2>
+      <div class="testimonial-grid">
+        <blockquote>
+          “Jane was amazing! She captured our wedding day perfectly. Every photo brings back the emotion of the moment.”
+          <footer>— Sarah & Liam</footer>
+        </blockquote>
+        <blockquote>
+          “Professional, friendly, and incredibly talented. I use Jane for all our brand shoots.”
+          <footer>— Emma, Small Business Owner</footer>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="section contact-section" data-aos="fade-up">
+    <div class="container">
+      <h2>Contact Me</h2>
+      <p>Ready to book a session or have a question? I'd love to hear from you! Just fill out the form below or email me directly at 
+        <a href="mailto:janedoephotography@gmail.com">janedoephotography@gmail.com</a>.
+      </p>
+      <form>
+        <div class="form-group">
+          <input type="text" placeholder="Your Name" required />
+          <input type="email" placeholder="Your Email" required />
+        </div>
+        <textarea placeholder="Your Message" rows="6" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Jane Doe Photography. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- AOS Animate On Scroll JS -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  </script>
+
+</body>
+</html>
