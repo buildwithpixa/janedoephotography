@@ -1,131 +1,531 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Freelance Photographer Portfolio</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BuildWithPixa — pixel-perfect websites that convert</title>
+  <meta name="description" content="BuildWithPixa designs and builds fast, modern, mobile-first websites that convert visitors into customers." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" type="image/png" href="/favicon.png">
 
-  <!-- AOS Animate On Scroll CSS -->
-  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+  <!-- Open Graph -->
+  <meta property="og:title" content="BuildWithPixa — pixel-perfect websites that convert" />
+  <meta property="og:description" content="Fast, modern, mobile-first websites with elegant design and clean code." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://buildwithpixa.com/" />
+  <meta property="og:image" content="/og-image.png" />
+
+  <style>
+    :root{
+      /* Light theme (default) */
+      --bg:#ffffff;
+      --panel:#ffffff;
+      --ink:#061226;        /* deep ink for dark-on-light */
+      --muted:#475569;
+      --line:#e6eef8;
+      --accent:#0ea5e9;
+      --accent-ink:#023047;
+      --shadow: 0 10px 30px rgba(2, 12, 27, 0.06);
+      --radius: 14px;
+      --radius-lg: 20px;
+      --maxw:1200px;
+      --glass: rgba(255,255,255,0.6);
+    }
+
+    [data-theme="dark"]{
+      --bg:#061322;
+      --panel:#071022;
+      --ink:#eef6ff;
+      --muted:#9fb2c8;
+      --line: rgba(255,255,255,0.06);
+      --accent:#56ccf2;
+      --accent-ink:#022b3a;
+      --shadow: 0 10px 30px rgba(0,0,0,0.45);
+      --glass: rgba(8,12,18,0.5);
+    }
+
+    html,body{height:100%}
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+      color:var(--ink);
+      background: linear-gradient(180deg, var(--bg), color-mix(in srgb, var(--bg) 90%, #f7fbff 10%));
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    a{ color:inherit; text-decoration:none }
+    img{ max-width:100%; display:block; height:auto }
+
+    .container{ width:100%; max-width:var(--maxw); margin-inline:auto; padding: 0 1rem }
+    header{
+      position:sticky; top:0; z-index:60; backdrop-filter:saturate(140%) blur(6px);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--panel) 82%, transparent), rgba(255,255,255,0));
+      border-bottom:1px solid var(--line);
+    }
+    .nav{ display:flex; align-items:center; justify-content:space-between; gap:.75rem; height:64px }
+    .brand{ display:flex; align-items:center; gap:.75rem }
+    .brand .wordmark{ font-weight:700; letter-spacing:.2px; text-transform:lowercase; font-size:1rem; color:var(--ink) }
+
+    .logo{ width:36px; height:36px; object-fit:contain }
+    .spacer{ flex:1 }
+    nav.primary a{ font-size:.95rem; color:var(--muted); padding:.4rem .65rem; border-radius:10px }
+    nav.primary a:hover{ color:var(--ink); background: color-mix(in srgb, var(--panel) 94%, var(--accent) 6%) }
+    .cta{ background:var(--ink); color:white; padding:.56rem .85rem; border-radius:12px; box-shadow: var(--shadow); font-weight:600 }
+    .cta:hover{ transform:translateY(-1px); filter:brightness(.98) }
+
+    .menu-btn{ display:none; border:1px solid var(--line); padding:.55rem .7rem; border-radius:12px; background:var(--panel) }
+    .theme-toggle{ border:1px solid var(--line); background:var(--panel); padding:.5rem .6rem; border-radius:10px; display:inline-flex; align-items:center; gap:.5rem }
+
+    .menu-panel{ position:fixed; inset:0 0 auto 0; top:64px; background:var(--panel); border-top:1px solid var(--line); transform:translateY(-8px); opacity:0; pointer-events:none; transition:.25s ease; }
+    .menu-panel.open{ transform:none; opacity:1; pointer-events:auto }
+    .menu-links{ display:grid; gap:.25rem; padding: .75rem 1rem 1rem }
+    .menu-links a{ padding:.9rem 1rem; border-radius:12px; background:transparent; color:var(--muted) }
+    .menu-links a:hover{ background: color-mix(in srgb, var(--accent) 8%, transparent); color:var(--ink) }
+
+    /* Hero */
+    .hero{ padding: clamp(2.75rem, 7vw, 6.5rem) 0 3rem }
+    .hero-grid{ display:grid; gap:2rem; align-items:center }
+    .hero h1{ font-size: clamp(2rem, 4.5vw, 3.25rem); line-height:1.05; margin:0 0 1rem 0 }
+    .hero p{ font-size: clamp(1rem, 2vw, 1.15rem); color:var(--muted); margin:0 0 1.25rem 0; max-width:70ch }
+    .hero-cta{ display:flex; gap:.75rem; flex-wrap:wrap }
+    .btn-outline{ border:1.5px solid var(--ink); color:var(--ink); background:transparent; padding:.5rem .8rem; border-radius:12px }
+    .btn-outline:hover{ background:var(--ink); color:#fff }
+
+    .hero-card{ background:var(--panel); border:1px solid var(--line); border-radius: var(--radius-lg); padding:1rem; box-shadow: var(--shadow) }
+    .stats{ display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap:.5rem; text-align:center }
+    .stat h3{ margin:.15rem 0 0 0; font-size:1.25rem }
+    .stat p{ margin:0; color:var(--muted); font-size:.85rem }
+
+    /* Sections */
+    section{ padding: clamp(2rem, 6vw, 3.75rem) 0 }
+    .section-head{ display:flex; align-items:baseline; justify-content:space-between; gap:1rem; margin-bottom:1.25rem }
+    .eyebrow{ letter-spacing:.12em; text-transform:uppercase; color:var(--muted); font-size:.78rem }
+    h2{ font-size: clamp(1.4rem, 3vw, 2rem); margin:.25rem 0 0 0 }
+    .grid{ display:grid; gap:1rem }
+
+    /* Services */
+    .service{ background:var(--panel); border:1px solid var(--line); padding:1rem; border-radius:var(--radius); box-shadow:var(--shadow); position:relative; overflow:hidden }
+    .service .tag{ position:absolute; top:.75rem; right:.75rem; font-size:.72rem; padding:.25rem .45rem; border-radius:999px; background: color-mix(in srgb, var(--accent) 12%, transparent); color:var(--accent-ink); border:1px solid color-mix(in srgb, var(--accent) 18%, transparent) }
+    .service h3{ margin:.25rem 0 .35rem 0; font-size:1.1rem }
+    .service p{ margin:0; color:var(--muted); font-size:.95rem }
+
+    /* Portfolio */
+    .cards{ display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:1rem }
+    .card{ background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); display:flex; flex-direction:column }
+    .thumb{ aspect-ratio:16/10; background:linear-gradient(135deg, color-mix(in srgb, var(--panel) 96%, #eaf6ff), color-mix(in srgb, var(--panel) 92%, #f3faff)); display:flex; align-items:center; justify-content:center; color:var(--muted); font-weight:600 }
+    .card .body{ padding: .85rem 1rem; }
+    .card .title{ font-weight:600 }
+    .card .meta{ color:var(--muted); font-size:.9rem }
+
+    /* Testimonials */
+    .testi{ background:var(--panel); border:1px solid var(--line); padding:1rem; border-radius:var(--radius); box-shadow:var(--shadow) }
+    .quote{ font-size:1rem; color:var(--ink) }
+    .who{ color:var(--muted); font-size:.9rem; margin-top:.25rem }
+
+    /* CTA strip */
+    .cta-strip{ background:linear-gradient(90deg, color-mix(in srgb, var(--accent) 9%, transparent), color-mix(in srgb, var(--accent) 6%, transparent)); border:1px solid color-mix(in srgb, var(--accent) 24%, transparent); border-radius:var(--radius-lg); padding:1rem; display:flex; flex-wrap:wrap; gap:.75rem; align-items:center; justify-content:space-between }
+
+    /* Footer */
+    footer{ border-top:1px solid var(--line); padding:1.5rem 0 3rem; color:var(--muted) }
+
+    /* Utilities */
+    .hide-sm{ display:none }
+    .pill{ padding:.4rem .7rem; border:1px solid var(--line); border-radius:999px; color:var(--muted); font-size:.8rem; background:transparent }
+    .reveal{ opacity:0; transform: translateY(8px); transition: .6s ease }
+    .reveal.visible{ opacity:1; transform:none }
+
+    /* Responsive */
+    @media (min-width: 768px){
+      .menu-btn{ display:none }
+      .hide-sm{ display:initial }
+      .hero-grid{ grid-template-columns: 1.25fr .75fr }
+      .grid.cols-3{ grid-template-columns: repeat(3, minmax(0, 1fr)) }
+      .grid.cols-2{ grid-template-columns: repeat(2, minmax(0, 1fr)) }
+      .stats{ gap:1rem }
+    }
+    @media (max-width: 767px){
+      .menu-btn{ display:inline-flex; align-items:center; justify-content:center }
+      nav.primary{ display:none }
+      .brand .wordmark{ display:none } /* save space on mobile */
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .reveal{ transition:none }
+      .spin-slow{ animation:none }
+    }
+  </style>
 </head>
 <body>
-
-  <!-- Header -->
   <header>
-    <div class="container">
-      <h1>Jane Doe Photography</h1>
-      <nav>
-        <a href="#about">About</a>
-        <a href="#portfolio">Portfolio</a>
-        <a href="#contact">Contact</a>
+    <div class="container nav" role="navigation" aria-label="Primary">
+      <a href="/" class="brand" aria-label="BuildWithPixa home">
+        <img id="logo" class="logo" src="/logo-dark.png" alt="buildwithpixa logo">
+        <span class="wordmark">buildwithpixa</span>
+      </a>
+
+      <nav class="primary hide-sm" aria-label="primary links">
+        <a href="#services">services</a>
+        <a href="#projects">projects</a>
+        <a href="#pricing">pricing</a>
+        <a href="#about">about</a>
+        <a href="#contact" class="pill">contact</a>
+        <a href="https://instagram.com/buildwithpixa" class="pill" target="_blank" rel="noopener">instagram</a>
+        <a href="https://facebook.com/buildwithpixa" class="pill" target="_blank" rel="noopener">facebook</a>
       </nav>
+
+      <div style="display:flex; gap:.5rem; align-items:center">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">☾</button>
+        <a class="cta" href="mailto:buildwithpixa@gmail.com">email us</a>
+        <button class="menu-btn" id="menuBtn" aria-controls="mobileMenu" aria-expanded="false" aria-label="Open menu">☰</button>
+      </div>
+    </div>
+
+    <div class="menu-panel" id="mobileMenu" role="dialog" aria-modal="true" aria-label="Mobile menu">
+      <div class="menu-links container">
+        <a href="#services">services</a>
+        <a href="#projects">projects</a>
+        <a href="#pricing">pricing</a>
+        <a href="#about">about</a>
+        <a href="#contact" class="cta" style="text-align:center">email us</a>
+        <div style="display:flex; gap:.5rem; justify-content:center">
+          <a href="https://instagram.com/buildwithpixa" class="pill" target="_blank" rel="noopener">instagram</a>
+          <a href="https://facebook.com/buildwithpixa" class="pill" target="_blank" rel="noopener">facebook</a>
+        </div>
+      </div>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="hero" data-aos="fade-up">
-    <div class="container">
-      <h1>Capturing Life’s Beautiful Moments</h1>
-      <p>Professional freelance photography — portraits, events, nature & more.</p>
-      <a href="#portfolio" class="btn">View My Work</a>
-    </div>
-  </section>
-
-  <!-- About Section -->
-  <section id="about" class="section" data-aos="fade-right">
-    <div class="container">
-      <h2>About Me</h2>
-      <p>Hi, I'm Jane Doe — a passionate freelance photographer based in New York. I specialize in capturing authentic moments through portrait, event, and lifestyle photography. My goal is to create timeless images that evoke emotion and tell real stories.</p>
-      <p>Whether it's a quiet smile, a joyful celebration, or a candid moment in nature, I aim to bring out the beauty in every scene. I’ve worked with clients ranging from individuals and couples to brands and event organizers — always with a focus on creativity, professionalism, and a personal touch.</p>
-      <p>When I’m not behind the lens, you’ll find me exploring new locations, editing in my home studio, or planning the next shoot. Let’s create something beautiful together.</p>
-    </div>
-  </section>
-
-  <!-- Services Section -->
-  <section id="services" class="section" data-aos="fade-up">
-    <div class="container">
-      <h2>Services</h2>
-      <div class="service-grid">
-        <div class="service" data-aos="fade-up" data-aos-delay="100">
-          <h3>Portrait Sessions</h3>
-          <p>Professional, natural portraits for individuals, couples, and families — in studio or on location.</p>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <p class="eyebrow reveal">build with precision · ship with speed</p>
+        <h1 class="reveal">pixel-perfect websites that convert</h1>
+        <p class="reveal">
+          We build pixel-perfect websites that convert visitors into customers by combining thoughtful design, measurable user experience, and battle-tested frontend engineering; every page is engineered for clarity, speed, and real-world results so your site not only looks professional but actively helps you win customers.
+        </p>
+        <div class="hero-cta reveal" role="group" aria-label="Primary actions">
+          <a class="cta" href="mailto:buildwithpixa@gmail.com">email us</a>
+          <a class="btn-outline" href="#projects">see recent work</a>
         </div>
-        <div class="service" data-aos="fade-up" data-aos-delay="200">
-          <h3>Event Photography</h3>
-          <p>Weddings, birthdays, concerts, and corporate events — capturing memories as they happen.</p>
-        </div>
-        <div class="service" data-aos="fade-up" data-aos-delay="300">
-          <h3>Brand & Product Photography</h3>
-          <p>Creative visuals for businesses, products, and social media campaigns that stand out.</p>
+        <p style="margin-top:1rem; color:var(--muted); max-width:70ch" class="reveal">
+          Whether you are a freelancer, a small business owner, or part of a growing team, we design websites with the conversion goals front and centre, prioritising crisp visual hierarchy, fast performance, accessibility, and messaging that persuades without shouting.
+        </p>
+      </div>
+
+      <div>
+        <div class="hero-card reveal" aria-hidden="true">
+          <img src="/logo-dark.png" alt="buildwithpixa mark" style="width:160px; display:block; margin:0 auto 1rem auto">
+          <div class="stats" aria-label="Key metrics">
+            <div class="stat">
+              <h3>Mobile-first</h3><p>every layout prioritised for phones</p>
+            </div>
+            <div class="stat">
+              <h3>Performance</h3><p>fast load, better rankings</p>
+            </div>
+            <div class="stat">
+              <h3>Conversion</h3><p>measured improvements, clear actions</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Portfolio Section -->
-  <section id="portfolio" class="section" data-aos="zoom-in">
-    <div class="container">
-      <h2>Portfolio</h2>
-      <div class="grid">
-        <img src="photos/woman-portrait.jpg" alt="Portrait Sample">
-        <img src="photos/landscape1.jpg" alt="Landscape Sample">
-        <img src="photos/nature.jpg" alt="Nature Sample">
-        <img src="photos/city.jpg" alt="City Sample">
+  <!-- Quick pitch -->
+  <section>
+    <div class="container reveal">
+      <div class="cta-strip">
+        <div style="font-weight:600">Focused on outcomes — beautiful sites, dependable code, predictable delivery</div>
+        <a href="mailto:buildwithpixa@gmail.com" class="pill">start your project →</a>
       </div>
     </div>
   </section>
 
-  <!-- Testimonials Section -->
-  <section id="testimonials" class="section testimonials-section" data-aos="fade-left">
+  <!-- Services -->
+  <section id="services">
     <div class="container">
-      <h2>Client Testimonials</h2>
-      <div class="testimonial-grid">
-        <blockquote>
-          “Jane was amazing! She captured our wedding day perfectly. Every photo brings back the emotion of the moment.”
-          <footer>— Sarah & Liam</footer>
-        </blockquote>
-        <blockquote>
-          “Professional, friendly, and incredibly talented. I use Jane for all our brand shoots.”
-          <footer>— Emma, Small Business Owner</footer>
-        </blockquote>
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">services</div>
+          <h2>everything you need to launch and grow online</h2>
+        </div>
+        <a class="pill" href="#pricing">see pricing</a>
+      </div>
+
+      <div class="grid cols-3">
+        <article class="service reveal">
+          <span class="tag">popular</span>
+          <h3>custom web development</h3>
+          <p>
+            We create fast, maintainable websites tailored to your goals, using semantic HTML, accessible patterns, and modern build tools so pages are easy to update and continue to perform long after launch; this service is ideal for businesses that want reliability, speed, and a site that converts.
+          </p>
+        </article>
+
+        <article class="service reveal">
+          <h3>branding & UI design</h3>
+          <p>
+            Clean visual systems and thoughtful UX help your products look trusted and professional; we craft typography, color, and component libraries that match your voice, reducing friction for users and increasing the chance that visitors become customers.
+          </p>
+        </article>
+
+        <article class="service reveal">
+          <h3>SEO & performance</h3>
+          <p>
+            From technical SEO to Lighthouse improvements, we optimise structure, metadata, and loading strategies so search engines can find you and visitors stay longer, which in turn improves lead generation and revenue potential for small businesses and freelancers alike.
+          </p>
+        </article>
       </div>
     </div>
   </section>
 
-  <!-- Contact Section -->
-  <section id="contact" class="section contact-section" data-aos="fade-up">
+  <!-- Projects -->
+  <section id="projects">
     <div class="container">
-      <h2>Contact Me</h2>
-      <p>Ready to book a session or have a question? I'd love to hear from you! Just fill out the form below or email me directly at 
-        <a href="mailto:janedoephotography@gmail.com">janedoephotography@gmail.com</a>.
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">projects</div>
+          <h2>work that blends beauty and measurable results</h2>
+        </div>
+        <a class="pill" href="#contact">work with us</a>
+      </div>
+
+      <div class="cards">
+        <article class="card reveal">
+          <div class="thumb" role="img" aria-label="Ecommerce redesign screenshot placeholder">ecommerce redesign (placeholder)</div>
+          <div class="body">
+            <div class="title">ecommerce redesign</div>
+            <div class="meta">Conversion uplift, checkout clarity, performance tuning</div>
+            <p style="margin-top:.6rem; color:var(--muted); font-size:.92rem">
+              Redesigned product pages, simplified checkout flow, and asset optimisation that resulted in measurable conversion improvements without additional ad spend.
+            </p>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <div class="thumb" role="img" aria-label="Portfolio revamp placeholder">portfolio revamp (placeholder)</div>
+          <div class="body">
+            <div class="title">portfolio revamp</div>
+            <div class="meta">fast, semantic, accessible</div>
+            <p style="margin-top:.6rem; color:var(--muted); font-size:.92rem">
+              A clean, image-forward portfolio that puts case studies first and clarifies service offerings for prospective clients, helping freelancers present their best work.
+            </p>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <div class="thumb" role="img" aria-label="Startup landing placeholder">startup landing (placeholder)</div>
+          <div class="body">
+            <div class="title">startup landing</div>
+            <div class="meta">under 1s TTI · clear messaging</div>
+            <p style="margin-top:.6rem; color:var(--muted); font-size:.92rem">
+              Focused landing pages with clear calls to action and performance budgets that keep bounce rates low while increasing qualified leads.
+            </p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section>
+    <div class="container grid cols-3">
+      <div class="testi reveal">
+        <div class="quote">“The new site loads faster, looks cleaner, and the onboarding flow now converts at a much higher rate than before; the team delivered on time and explained everything clearly.”</div>
+        <div class="who">— Emma, founder (ecommerce brand)</div>
+      </div>
+
+      <div class="testi reveal">
+        <div class="quote">“From brief to launch in two weeks; the interface is elegant, the admin is simple, and customers complimented the new design immediately.”</div>
+        <div class="who">— Marcus, creative director</div>
+      </div>
+
+      <div class="testi reveal">
+        <div class="quote">“We doubled our leads within a month thanks to clearer messaging and faster pages — highly recommended for small teams who need impact quickly.”</div>
+        <div class="who">— Priya, agency partner</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">pricing</div>
+          <h2>simple tiers, custom options</h2>
+        </div>
+        <a class="pill" href="mailto:buildwithpixa@gmail.com">request a custom quote</a>
+      </div>
+
+      <div class="grid cols-3">
+        <div class="service reveal">
+          <span class="tag">starter</span>
+          <h3>launch</h3>
+          <p>Single page or landing package designed to validate ideas quickly with a tight performance and conversion focus for lean budgets.</p>
+        </div>
+        <div class="service reveal">
+          <span class="tag">pro</span>
+          <h3>growth</h3>
+          <p>Multi-page website with content structure, on-page SEO, and performance tuning to support business growth and better search visibility.</p>
+        </div>
+        <div class="service reveal">
+          <span class="tag">enterprise</span>
+          <h3>custom</h3>
+          <p>Full feature scope with integrations, advanced analytics, and bespoke engineering for teams that need complex functionality and reliability.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about">
+    <div class="container reveal">
+      <div class="eyebrow">about</div>
+      <h2>we love clean code and practical design</h2>
+      <p>
+        BuildWithPixa is a small, focused team that partners with businesses and freelancers to ship websites that do work for them; we care deeply about performance, accessibility, and copy that actually converts, and we make technical decisions that keep maintenance costs low while delivering measurable results.
       </p>
-      <form>
-        <div class="form-group">
-          <input type="text" placeholder="Your Name" required />
-          <input type="email" placeholder="Your Email" required />
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section aria-labelledby="faqHeading">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">faq</div>
+          <h2 id="faqHeading">common questions</h2>
         </div>
-        <textarea placeholder="Your Message" rows="6" required></textarea>
-        <button type="submit">Send Message</button>
-      </form>
+      </div>
+
+      <div style="display:grid; gap:.75rem">
+        <details class="reveal"><summary style="font-weight:600; cursor:pointer">How do I start a project?</summary>
+          <div style="margin-top:.5rem; color:var(--muted)">Email us at <a href="mailto:buildwithpixa@gmail.com">buildwithpixa@gmail.com</a> with a short brief and links to examples you like; we’ll reply with next steps and a clear estimate.</div>
+        </details>
+
+        <details class="reveal"><summary style="font-weight:600; cursor:pointer">Do you offer revisions?</summary>
+          <div style="margin-top:.5rem; color:var(--muted)">Yes — each package includes a revision window so you can refine copy, visuals, and interactions until the outcome matches your business goals.</div>
+        </details>
+
+        <details class="reveal"><summary style="font-weight:600; cursor:pointer">Will my site be easy to update?</summary>
+          <div style="margin-top:.5rem; color:var(--muted)">Absolutely — we use clear content structures and hand over a concise guide so you can update content without needing to touch code.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact CTA -->
+  <section id="contact">
+    <div class="container">
+      <div class="cta-strip reveal">
+        <div>
+          <div style="font-weight:700; font-size:1.15rem">have a project in mind?</div>
+          <div style="color:var(--muted)">Tell us about the problem you're solving and we'll suggest the simplest path to results.</div>
+        </div>
+        <div style="display:flex; gap:.5rem; flex-wrap:wrap">
+          <a class="cta" href="mailto:buildwithpixa@gmail.com">email buildwithpixa@gmail.com</a>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- Footer -->
   <footer>
-    <div class="container">
-      <p>&copy; 2025 Jane Doe Photography. All rights reserved.</p>
+    <div class="container" style="display:flex; gap:1rem; justify-content:space-between; align-items:center; flex-wrap:wrap">
+      <div style="display:flex; align-items:center; gap:.5rem">
+        <img id="footerLogo" class="logo" src="/logo-dark.png" alt="buildwithpixa logo" style="width:36px; height:36px">
+        <span>© <span id="y"></span> buildwithpixa</span>
+      </div>
+
+      <div style="display:flex; gap:.5rem; align-items:center">
+        <a class="pill" href="#about">about</a>
+        <a class="pill" href="#projects">projects</a>
+        <a class="pill" href="#pricing">pricing</a>
+        <a class="pill" href="#contact">contact</a>
+        <a class="pill" href="https://instagram.com/buildwithpixa" target="_blank" rel="noopener">instagram</a>
+        <a class="pill" href="https://facebook.com/buildwithpixa" target="_blank" rel="noopener">facebook</a>
+      </div>
     </div>
   </footer>
 
-  <!-- AOS Animate On Scroll JS -->
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
   <script>
-    AOS.init({
-      duration: 1000,
-      once: true,
-    });
-  </script>
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    if (menuBtn && mobileMenu) {
+      menuBtn.addEventListener('click', () => {
+        const open = mobileMenu.classList.toggle('open');
+        menuBtn.setAttribute('aria-expanded', open);
+      });
+    }
 
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(entries=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting) entry.target.classList.add('visible');
+        });
+      },{ threshold:.12 });
+      reveals.forEach(r=>observer.observe(r));
+    } else {
+      reveals.forEach(r=>r.classList.add('visible'));
+    }
+
+    // Current year
+    const y = document.getElementById('y');
+    if (y) y.textContent = new Date().getFullYear();
+
+    // Theme toggle + logo swap
+    const themeToggle = document.getElementById('themeToggle');
+    const root = document.documentElement;
+    const logo = document.getElementById('logo');
+    const footerLogo = document.getElementById('footerLogo');
+
+    // prefer saved theme, else prefer user preference, else default to light
+    const savedTheme = localStorage.getItem('bwp-theme');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+
+    function applyTheme(theme) {
+      if (theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        themeToggle.textContent = '☀';
+        if (logo) logo.src = '/logo-white.png';
+        if (footerLogo) footerLogo.src = '/logo-white.png';
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        themeToggle.textContent = '☾';
+        if (logo) logo.src = '/logo-dark.png';
+        if (footerLogo) footerLogo.src = '/logo-dark.png';
+      }
+    }
+
+    applyTheme(initialTheme);
+
+    if (themeToggle) {
+      themeToggle.addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+        const next = current === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+        localStorage.setItem('bwp-theme', next);
+      });
+    }
+
+    // Accessibility: focus outline removal for mouse users only
+    function handleFirstTab(e) {
+      if (e.key === 'Tab') {
+        document.body.classList.remove('no-focus-outline');
+        window.removeEventListener('keydown', handleFirstTab);
+      }
+    }
+    window.addEventListener('keydown', handleFirstTab);
+    document.body.classList.add('no-focus-outline');
+  </script>
 </body>
 </html>
